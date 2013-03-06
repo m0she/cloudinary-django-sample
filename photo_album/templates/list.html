@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load cloudinary %}
+{% block body %}
+  {% for photo in photos %}
+    <h3>{{ photo.title }}</h3>
+    {% cloudinary photo.image %}
+    <br/>
+  {% endfor %}
+{% endblock %}

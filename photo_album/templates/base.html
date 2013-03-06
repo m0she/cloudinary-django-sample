@@ -1,0 +1,29 @@
+{% load cloudinary %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %}</title>
+
+    <link rel="shortcut icon"
+     href="{% cloudinary_url "http://cloudinary.com/favicon.png" type="fetch" %}" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+  </head>
+  <body>
+    <div id="logo">
+        <!-- This will render the fetched image using cloudinary -->
+        {% cloudinary "http://cloudinary.com/images/logo.png" type="fetch" %}
+    </div>
+    <div id="posterframe" style="position: absolute; right: 0; top: 5px;">
+        <!-- This will render the fetched facebook image using cloudinary with all the
+             requested transformations -->
+        {% cloudinary "officialchucknorrispage" format="png" type="facebook" %}
+          "transformation" => array(
+            array("height" => 95, "width" => 95, "crop" => "thumb", "gravity" => "face",
+              "effect" => "sepia", "radius" => 20
+            ), array("angle" => 10)
+          ))); 
+        ?>
+    </div>
+    {% block body %}{% endblock %}
+  </body>
+</html>
