@@ -1,0 +1,21 @@
+.more_info, .show_more_info .less_info {
+  display: none;
+}
+.show_more_info .more_info, .less_info {
+  display: inline-block;
+}
+.inline {
+  display: inline-block;
+}
+td {
+  vertical-align: top;
+  padding-right: 5px;
+}
+.photo a {
+  display: inline-block;
+  width: 200px;
+}
+.photo > * {
+  vertical-align: top;
+}
+

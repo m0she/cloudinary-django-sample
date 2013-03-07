@@ -1,4 +1,5 @@
 {% load cloudinary %}
+{% load staticfiles %}
 <html>
   <head>
     <meta charset="utf-8">
@@ -7,6 +8,10 @@
     <link rel="shortcut icon"
      href="{% cloudinary_url "http://cloudinary.com/favicon.png" type="fetch" %}" />
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <link href="{% static "photo_album.css" %}" rel="stylesheet" type="text/css">
+    <script>
+      {% block javascript %}{% endblock %}
+    </script>
   </head>
   <body>
     <div id="logo">
@@ -16,13 +21,7 @@
     <div id="posterframe" style="position: absolute; right: 0; top: 5px;">
         <!-- This will render the fetched facebook image using cloudinary with all the
              requested transformations -->
-        {% cloudinary "officialchucknorrispage" format="png" type="facebook" %}
-          "transformation" => array(
-            array("height" => 95, "width" => 95, "crop" => "thumb", "gravity" => "face",
-              "effect" => "sepia", "radius" => 20
-            ), array("angle" => 10)
-          ))); 
-        ?>
+        {% cloudinary "officialchucknorrispage" icon_effects %}
     </div>
     {% block body %}{% endblock %}
   </body>
