@@ -1,3 +1,4 @@
+import django.conf.global_settings as DEFAULT_SETTINGS
 # Django settings for cloudinary_django_sample project.
 
 DEBUG = True
@@ -97,7 +98,7 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-TEMPLATE_CONTEXT_PROCESSORS = (
+TEMPLATE_CONTEXT_PROCESSORS = DEFAULT_SETTINGS.TEMPLATE_CONTEXT_PROCESSORS + (
     'photo_album.context_processors.consts',
 )
 

@@ -1,3 +1,4 @@
+import cloudinary
 def consts(request):
     return dict(
         ICON_EFFECTS = dict(
@@ -8,4 +9,8 @@ def consts(request):
                 dict(angle=10),
             ]
         ),
+        THUMBNAIL = {
+            "class": "thumbnail inline", "format": "jpg", "height": 150, "width": 150,
+        },
+        CLOUDINARY_CLOUD_NAME = cloudinary.config().cloud_name,
     )
