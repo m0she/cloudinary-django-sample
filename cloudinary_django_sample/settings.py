@@ -97,6 +97,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'photo_album.context_processors.consts',
+)
+
 ROOT_URLCONF = 'cloudinary_django_sample.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
