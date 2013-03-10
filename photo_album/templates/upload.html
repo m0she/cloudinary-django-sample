@@ -27,9 +27,11 @@
     allow uploading directly to your Cloudinary storage -->
   <div id='direct_upload'>
     <h1>Direct upload from the browser</h1>
-    {% with STATIC_URL|add:"html/cloudinary_cors.html" as callback %}
-      {% cloudinary_direct_upload upload_callback %}
-    {% endwith %}
+
+    <form action="{% url photo_album.views.direct_upload_complete %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ direct_form }}
+    </form>
 
     <!-- status box -->
     <div class="status">
@@ -50,7 +52,6 @@
     return ret;
   }
   $(function () {
-    return;
     $('#direct_upload input[type="file"]')
     .fileupload({
       dropZone: '#direct_upload',
@@ -62,8 +63,10 @@
       },
     })
     .on('cloudinarydone', function (e, data) {
-        $('.status_value').text('Idle');
-        $.post('upload_complete.php', data.result);
+        $('.status_value').text('Updating backend...');
+        $.post(this.form.action, $(this.form).serialize()).always(function (result, status, jqxhr) {
+          $('.status_value').text(result.errors ? JSON.stringify(result.errors) : status);
+        });
         var info = $('<div class="uploaded_info"/>');
         $(info).append($('<div class="data"/>').append(prettydump(data.result)));
         $(info).append($('<div class="image"/>').append(
