@@ -3,6 +3,9 @@ from django.shortcuts import render
 from .models import Photo
 from .forms import PhotoForm
 
+def filter_nones(d):
+    return dict((k,v) for k,v in d.iteritems() if v is not None)
+
 def list(request):
     defaults = dict(format="jpg", height=150, width=150)
     defaults["class"] = "thumbnail inline"
@@ -10,15 +13,13 @@ def list(request):
     samples = [
         dict(crop="fill", radius=10),
         dict(crop="scale"),
-        dict(crop="fit"),
+        dict(crop="fit", format="png"),
         dict(crop="thumb", gravity="face"),
-        dict(format="png", transformation=[
-            dict(crop="fill", gravity="north", width=150, height=150),
-            dict(effect="sepia"),
-            dict(angle=20),
+        dict(format="png", angle=20, height=None, width=None, transformation=[
+            dict(crop="fill", gravity="north", width=150, height=150, effect="sepia"),
         ]),
     ]
-    samples = [dict(defaults, **sample) for sample in samples]
+    samples = [filter_nones(dict(defaults, **sample)) for sample in samples]
     return render(request, 'list.html', dict(photos=Photo.objects.all(), samples=samples))
 
 def upload(request):

@@ -16,11 +16,11 @@
   </head>
   <body>
     <div id="logo">
-        <!-- This will render the fetched image using cloudinary -->
+        <!-- This will render the image fetched from a remote HTTP URL using Cloudinary -->
         {% cloudinary "http://cloudinary.com/images/logo.png" type="fetch" %}
     </div>
-    <div id="posterframe" style="position: absolute; right: 0; top: 5px;">
-        <!-- This will render the fetched facebook image using cloudinary with all the
+    <div id="posterframe">
+        <!-- This will render the fetched Facebook profile picture using Cloudinary according to th
              requested transformations -->
         {% cloudinary "officialchucknorrispage" ICON_EFFECTS %}
     </div>

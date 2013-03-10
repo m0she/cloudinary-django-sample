@@ -3,10 +3,9 @@
 {% load staticfiles %}
 
 {% block body %}
-  <!-- This is the backend upload - based on the fileupload javascript for the frontend and also
-       on the PHP backend demo. The uploaded images will be processed in upload_backend.php -->
+  <!-- A standard form for sending the image data to your server -->
   <div id='backend_upload'>
-    <br /><h1>Upload through backend</h1>
+    <h1>Upload through backend</h1>
     <form action="{% url photo_album.views.upload %}" method="post" enctype="multipart/form-data">
       {% csrf_token %}
       {{ backend_form }}
@@ -23,23 +22,22 @@
     {% endif %}
   </div>
 
-  <!-- Status box -->
-  <div class="status" style="position: fixed; width: 200px; left: 50%; text-align: center; border: double;">
-    <h3>Status</h3>
-    <span class="status_value">Idle</span>
-  </div>
   <!-- This is the direct upload - also based on the fileupload for the frontend.
-        The cl_image_upload_tag php function is generating the required html and javascript to
-        allow uploading directly to your Cloudinary storage -->
+    The cl_image_upload_tag php function is generating the required html and javascript to
+    allow uploading directly to your Cloudinary storage -->
   <div id='direct_upload'>
-    <br /><h1>Direct upload</h1>
+    <h1>Direct upload from the browser</h1>
     {% with STATIC_URL|add:"html/cloudinary_cors.html" as callback %}
-      {% cloudinary_direct_upload callback %}
+      {% cloudinary_direct_upload upload_callback %}
     {% endwith %}
-    <div class="uploaded-info" style="display: none;">
-      <div class="data"></div>
-      <div class="image"></div>
+
+    <!-- status box -->
+    <div class="status">
+      <h2>Status</h2>
+      <span class="status_value">Idle</span>
     </div>
+    <div class="uploaded_info_holder">
+    <a href="{% url photo_album.views.list %}" class="back_link">Back to list...</a>
   </div>
 {% endblock %}
 {% block javascript %}
@@ -52,6 +50,7 @@
     return ret;
   }
   $(function () {
+    return;
     $('#direct_upload input[type="file"]')
     .fileupload({
       dropZone: '#direct_upload',
@@ -59,17 +58,20 @@
         $('.status_value').text('Starting direct upload...');
       },
       progress: function () {
-        $('.status_value').text('Continue direct upload...');
+        $('.status_value').text('Uploading...');
       },
     })
     .on('cloudinarydone', function (e, data) {
         $('.status_value').text('Idle');
         $.post('upload_complete.php', data.result);
-        $('.uploaded-info .data').html(prettydump(data.result));
-        $('.uploaded-info .image').empty().append($.cloudinary.image(data.result.public_id, {
-          format: "png", width: 400, height: 300,
-        }));
-        $('.uploaded-info').show();
+        var info = $('<div class="uploaded_info"/>');
+        $(info).append($('<div class="data"/>').append(prettydump(data.result)));
+        $(info).append($('<div class="image"/>').append(
+           $.cloudinary.image(data.result.public_id, {
+           format: data.result.format, width: 150, height: 150, crop: "fill"
+           })
+        ));
+        $('.uploaded_info_holder').append(info);
     });
   });
 {% endblock %}
