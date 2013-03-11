@@ -1,0 +1,2 @@
+cloudinary>=1.0.5
+Django>=1.4
