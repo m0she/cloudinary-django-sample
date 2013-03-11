@@ -31,6 +31,7 @@
     <form action="{% url photo_album.views.direct_upload_complete %}" method="post" enctype="multipart/form-data">
       {% csrf_token %}
       {{ direct_form }}
+      {# altenatively, could use: {% cloudinary_direct_upload_field request=request %} #}
     </form>
 
     <!-- status box -->
@@ -43,7 +44,6 @@
   </div>
 {% endblock %}
 {% block javascript %}
-  $.cloudinary.config("cloud_name", "{{ CLOUDINARY_CLOUD_NAME }}");
   function prettydump(obj) {
     ret = ""
     $.each(obj, function(key, value) {
