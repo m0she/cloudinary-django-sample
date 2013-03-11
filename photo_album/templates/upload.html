@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 {% load cloudinary %}
 {% load staticfiles %}
+{% load url from future %}
 
 {% block body %}
   <!-- A standard form for sending the image data to your server -->
   <div id='backend_upload'>
     <h1>Upload through backend</h1>
-    <form action="{% url photo_album.views.upload %}" method="post" enctype="multipart/form-data">
+    <form action="{% url "photo_album.views.upload" %}" method="post" enctype="multipart/form-data">
       {% csrf_token %}
       {{ backend_form }}
       <input type="submit" value="Upload">
@@ -28,7 +29,7 @@
   <div id='direct_upload'>
     <h1>Direct upload from the browser</h1>
 
-    <form action="{% url photo_album.views.direct_upload_complete %}" method="post" enctype="multipart/form-data">
+    <form action="{% url "photo_album.views.direct_upload_complete" %}" method="post" enctype="multipart/form-data">
       {% csrf_token %}
       {{ direct_form }}
       {# altenatively, could use: {% cloudinary_direct_upload_field request=request %} #}
@@ -40,7 +41,7 @@
       <span class="status_value">Idle</span>
     </div>
     <div class="uploaded_info_holder">
-    <a href="{% url photo_album.views.list %}" class="back_link">Back to list...</a>
+    <a href="{% url "photo_album.views.list" %}" class="back_link">Back to list...</a>
   </div>
 {% endblock %}
 {% block javascript %}

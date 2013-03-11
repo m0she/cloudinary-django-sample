@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load cloudinary %}
+{% load url from future %}
+
 {% block body %}
   <h1>Welcome!</h1>
   <p>
@@ -20,7 +22,7 @@
       Following are the images uploaded by you. You can also upload more pictures.
 
       You can click on each picture to view its original size, and see more info about and additional transformations.
-      <a class="upload_link" href="{% url photo_album.views.upload %}">Upload Images...</a>
+      <a class="upload_link" href="{% url "photo_album.views.upload" %}">Upload Images...</a>
     </p>
     {% if not photos.exists %}
       <p>No images were uploaded yet.</p>
