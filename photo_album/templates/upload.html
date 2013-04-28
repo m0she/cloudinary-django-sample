@@ -6,7 +6,7 @@
 {% block body %}
   <!-- A standard form for sending the image data to your server -->
   <div id='backend_upload'>
-    <h1>Upload through backend</h1>
+    <h1>Upload through your server</h1>
     <form action="{% url "photo_album.views.upload" %}" method="post" enctype="multipart/form-data">
       {% csrf_token %}
       {{ backend_form }}
@@ -23,9 +23,9 @@
     {% endif %}
   </div>
 
-  <!-- This is the direct upload - also based on the fileupload for the frontend.
-    The cl_image_upload_tag php function is generating the required html and javascript to
-    allow uploading directly to your Cloudinary storage -->
+  <!-- A form for direct uploading using a jQuery plug-in. 
+  	The cloudinary_direct_upload_field method generates the required HTML and JavaScript to    
+    allow uploading directly from the browser to your Cloudinary account -->
   <div id='direct_upload'>
     <h1>Direct upload from the browser</h1>
 
