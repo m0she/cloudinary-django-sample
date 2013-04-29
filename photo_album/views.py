@@ -1,6 +1,5 @@
 import json
 
-from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
@@ -17,6 +16,7 @@ def list(request):
     defaults = dict(format="jpg", height=150, width=150)
     defaults["class"] = "thumbnail inline"
 
+    # The different transformations to present
     samples = [
         dict(crop="fill", radius=10),
         dict(crop="scale"),
@@ -31,24 +31,30 @@ def list(request):
 
 def upload(request):
     context = dict(
+        # Form demonstrating backend upload
         backend_form = PhotoForm(),
+        # Form demonstrating direct upload
         direct_form = PhotoDirectForm(),
-        upload_callback = request.build_absolute_uri(reverse('photo_album.views.upload')),
     )
+    # When using direct upload - the following call in necessary to update the
+    # form's callback url
     cl_init_js_callbacks(context['direct_form'], request)
 
     if request.method == 'POST':
+        # Only backend upload should be posting here
         form = PhotoForm(request.POST, request.FILES)
         context['posted'] = form.instance
         if form.is_valid():
+            # Uploads image and creates a model instance for it
             form.save()
 
     return render(request, 'upload.html', context)
 
 @csrf_exempt
 def direct_upload_complete(request):
-    form = PhotoDirectForm(request.POST.copy())
+    form = PhotoDirectForm(request.POST)
     if form.is_valid():
+        # Create a model instance for uploaded image using the provided data
         form.save()
         ret = dict(photo_id = form.instance.id)
     else:

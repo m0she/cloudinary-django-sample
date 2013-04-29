@@ -31,6 +31,8 @@
       <div class="photo">
           <a href="{{ photo.image.url }}" target="_blank" class="public_id_link">
             <div class='public_id'>{{ photo.image.public_id }} - {{ photo.title }}</div>
+            {# Renders an IMG tag for a CloudinaryImage objects. #}
+            {# THUMBNAIL defined in context_processors #}
             {% cloudinary photo.image THUMBNAIL %}
           </a>
         <div class="less_info">

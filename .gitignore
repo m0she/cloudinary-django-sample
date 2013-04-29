@@ -1,3 +1,4 @@
 photos.db
 build
 venv
+*.pyc
