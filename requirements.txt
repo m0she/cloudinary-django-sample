@@ -1,2 +1,2 @@
-cloudinary>=1.0.5
+cloudinary>=1.0.7
 Django>=1.4
