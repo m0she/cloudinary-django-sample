@@ -29,30 +29,33 @@ def list(request):
     samples = [filter_nones(dict(defaults, **sample)) for sample in samples]
     return render(request, 'list.html', dict(photos=Photo.objects.all(), samples=samples))
 
-def upload(request):
-    context = dict(
+def upload(request, pk=None):
+    instance = Photo.objects.get(pk=pk) if pk else None
+    context = dict(save_pk = pk or "")
+    if request.method == 'POST':
+        # Only backend upload should be posting here
+        context['backend_form'] = form = PhotoForm(request.POST, request.FILES, instance=instance)
+        if form.is_valid():
+            # Uploads image and creates a model instance for it
+            context['posted'] = form.save()
+
+        instance = Photo.objects.get(pk=pk) if pk else None
+    else:
         # Form demonstrating backend upload
-        backend_form = PhotoForm(),
-        # Form demonstrating direct upload
-        direct_form = PhotoDirectForm(),
-    )
+        context['backend_form'] = PhotoForm(instance=instance)
+
+    # Form demonstrating direct upload
+    context['direct_form'] = PhotoDirectForm(instance=instance)
     # When using direct upload - the following call in necessary to update the
     # form's callback url
     cl_init_js_callbacks(context['direct_form'], request)
 
-    if request.method == 'POST':
-        # Only backend upload should be posting here
-        form = PhotoForm(request.POST, request.FILES)
-        context['posted'] = form.instance
-        if form.is_valid():
-            # Uploads image and creates a model instance for it
-            form.save()
-
     return render(request, 'upload.html', context)
 
 @csrf_exempt
-def direct_upload_complete(request):
-    form = PhotoDirectForm(request.POST)
+def direct_upload_complete(request, pk=None):
+    instance = Photo.objects.get(pk=pk) if pk else None
+    form = PhotoDirectForm(request.POST, instance=instance)
     if form.is_valid():
         # Create a model instance for uploaded image using the provided data
         form.save()

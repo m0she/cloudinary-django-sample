@@ -7,7 +7,7 @@
   <!-- A standard form for sending the image data to your server -->
   <div id='backend_upload'>
     <h1>Upload through your server</h1>
-    <form action="{% url "photo_album.views.upload" %}" method="post" enctype="multipart/form-data">
+    <form action="{% url "photo_album.views.upload" save_pk %}" method="post" enctype="multipart/form-data">
       {% csrf_token %}
       {{ backend_form }}
       <input type="submit" value="Upload">
@@ -40,7 +40,7 @@
   <div id='direct_upload'>
     <h1>Direct upload from the browser</h1>
 
-    <form action="{% url "photo_album.views.direct_upload_complete" %}" method="post" enctype="multipart/form-data">
+    <form action="{% url "photo_album.views.direct_upload_complete" save_pk %}" method="post">
       {% csrf_token %}
       {{ direct_form }}
       {# altenatively, could use: {% cloudinary_direct_upload_field request=request %} #}

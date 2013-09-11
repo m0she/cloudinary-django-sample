@@ -11,8 +11,10 @@ urlpatterns = patterns('',
     url(r'^list$', photo_album.list),
     # URL for uploading an image
     url(r'^upload$', photo_album.upload),
+    url(r'^upload/(?P<pk>\d*)$', photo_album.upload),
     # The direct upload functionality reports to this URL when an image is uploaded.
     url(r'^upload/complete$', photo_album.direct_upload_complete),
+    url(r'^upload/complete/(?P<pk>\d*)$', photo_album.direct_upload_complete),
     # Add the admin functionality:
     (r'^admin/', include(admin.site.urls)),
 )
